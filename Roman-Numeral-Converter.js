@@ -1,10 +1,10 @@
 function obtenerTablaSimbolosRomanos(){
     var simbolosRomanos = {
         1000: "M",
-        900: "D",
-        500: "CD",
-        400: "C",
-        100: "XC",
+        900: "CM",
+        500: "D",
+        400: "CD",
+        100: "C",
         90: "XC",
         50: "L",
         40: "XL",
@@ -24,21 +24,22 @@ function buscarMenorCompatible(num, simbolosRomanos){
     
     for (const numeroArabico of numerosArabicos) {
         if (numeroArabico <= num) {
-            console.log(numeroArabico);
             return numeroArabico;
         }
     }
 }
 
 function convertToRoman(num) {
+    var resul = "";
     let simbolosRomanos = obtenerTablaSimbolosRomanos();
 
+    while (num != 0) {
+        let menorCompatible = buscarMenorCompatible(num, simbolosRomanos);
+        resul += simbolosRomanos[menorCompatible];
+        num-= menorCompatible;
+    }
 
-    let str = simbolosRomanos[num];
-    
-    let menorCompatible = buscarMenorCompatible(num, simbolosRomanos);
-    console.log(menorCompatible);
-    return str;
+    return resul;
    }
    
 console.log(convertToRoman(1003));
