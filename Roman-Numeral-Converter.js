@@ -18,11 +18,27 @@ function obtenerTablaSimbolosRomanos(){
     return simbolosRomanos;
 }
 
+function buscarMenorCompatible(num, simbolosRomanos){
+    let numerosArabicos = Object.keys(simbolosRomanos);
+    numerosArabicos = numerosArabicos.sort((a, b) => b - a);
+    
+    for (const numeroArabico of numerosArabicos) {
+        if (numeroArabico <= num) {
+            console.log(numeroArabico);
+            return numeroArabico;
+        }
+    }
+}
+
 function convertToRoman(num) {
     let simbolosRomanos = obtenerTablaSimbolosRomanos();
-    let str = simbolosRomanos[num];
 
+
+    let str = simbolosRomanos[num];
+    
+    let menorCompatible = buscarMenorCompatible(num, simbolosRomanos);
+    console.log(menorCompatible);
     return str;
    }
    
-console.log(convertToRoman(1000));
+console.log(convertToRoman(1003));
