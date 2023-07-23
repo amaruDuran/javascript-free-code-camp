@@ -1,5 +1,5 @@
 function telephoneRegexWithMinus(str){
-    let telRegexWithMinus = /(\d{3})-(\d{3})-(\d{4})/g
+    let telRegexWithMinus = /(1\s)?^(\d{3})-(\d{3})-(\d{4})/g
     return telRegexWithMinus.test(str);
 }
 
@@ -9,7 +9,7 @@ function telephoneRegexWithParenthesis(str){
 }
 
 function telephoneRegexWithParenthesisAndSpace(str) {
-    let telRegexWithParenthesisAndSpace = /(\(\d{3}\))\s(\d{3})-(\d{4})/g
+    let telRegexWithParenthesisAndSpace = /\(\d{3}\)\s(\d{3})-(\d{4})/g
     return telRegexWithParenthesisAndSpace.test(str);
 }
 
@@ -18,11 +18,17 @@ function telephoneRegexWith10Numbers(str){
     return telephoneRegexWith10Numbers.test(str);
 }
 
+function telephoneRegexWith10NumbersAndSpace(str) {
+    let telephoneRegexWith10NumbersAndSpace = /(1\s)?(\d{3}) (\d{3}) (\d{4})/g
+    return telephoneRegexWith10NumbersAndSpace.test(str);
+}
+
 function telephoneCheck(str) {
     return (telephoneRegexWithMinus(str)
      || telephoneRegexWithParenthesis(str)
      || telephoneRegexWithParenthesisAndSpace(str)
-     || telephoneRegexWith10Numbers(str));
+     || telephoneRegexWith10Numbers(str)
+     || telephoneRegexWith10NumbersAndSpace(str));
   }
 
 console.log("TEST TelephoneRegexWithMinus") 
@@ -59,3 +65,12 @@ console.log(telephoneRegexWith10Numbers("(555) 555-5555"));
 console.log(telephoneRegexWith10Numbers("555 555 5555"));
 console.log(telephoneRegexWith10Numbers("5555555555"));
 console.log(telephoneRegexWith10Numbers("1 555 555 5555"));
+
+console.log("")
+console.log("TEST telephoneRegexWith10NumbersAndSpace")
+console.log(telephoneRegexWith10NumbersAndSpace("555-555-5555"));
+console.log(telephoneRegexWith10NumbersAndSpace("(555)555-5555"));
+console.log(telephoneRegexWith10NumbersAndSpace("(555) 555-5555"));
+console.log(telephoneRegexWith10NumbersAndSpace("555 555 5555"));
+console.log(telephoneRegexWith10NumbersAndSpace("5555555555"));
+console.log(telephoneRegexWith10NumbersAndSpace("1 555 555 5555"));
