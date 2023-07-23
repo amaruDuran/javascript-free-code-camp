@@ -1,15 +1,15 @@
 function telephoneRegexWithMinus(str){
-    let telRegexWithMinus = /(1\s)?^(\d{3})-(\d{3})-(\d{4})/g
+    let telRegexWithMinus = /^(1\s)?(\d{3})-(\d{3})-(\d{4})/g
     return telRegexWithMinus.test(str);
 }
 
 function telephoneRegexWithParenthesis(str){
-    let telRegexWithParenthesis = /(\(\d{3}\))(\d{3})-(\d{4})/g
+    let telRegexWithParenthesis = /^(1\s?)?(\(\d{3}\))(\d{3})-(\d{4})/g
     return telRegexWithParenthesis.test(str);
 }
 
 function telephoneRegexWithParenthesisAndSpace(str) {
-    let telRegexWithParenthesisAndSpace = /\(\d{3}\)\s(\d{3})-(\d{4})/g
+    let telRegexWithParenthesisAndSpace = /^(1\s)?\(\d{3}\)\s(\d{3})-(\d{4})/g
     return telRegexWithParenthesisAndSpace.test(str);
 }
 
