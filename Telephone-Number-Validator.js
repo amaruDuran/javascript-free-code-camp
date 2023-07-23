@@ -14,11 +14,9 @@ function telephoneRegexWithParenthesisAndSpace(str) {
 }
 
 function telephoneCheck(str) {
-    let testTelRegexWithMinus = telephoneRegexWithMinus(str);
-    let telRegexWithParenthesis = telephoneRegexWithParenthesis(str);
-    let telRegexWithParenthesisAndSpace = /(\(\d{3}\))\s(\d{3})-(\d{4})/g
-    telRege3 = /(\(\d{3}\))|(\d{3})[-\s]?\s?(\d{3})[-\s]?(\d{4})/g
-    return telRegex.test(str);
+    return (telephoneRegexWithMinus(str)
+     || telephoneRegexWithParenthesis(str)
+     || telephoneRegexWithParenthesisAndSpace(str));
   }
 
 console.log("TEST TelephoneRegexWithMinus") 
