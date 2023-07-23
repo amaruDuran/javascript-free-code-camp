@@ -4,21 +4,31 @@ function telephoneRegexWithMinus(str){
 }
 
 function telephoneRegexWithParenthesis(str){
-    /[\(]?(\d{3})[\)-\s]?\s?(\d{3})[-\s]?(\d{4})/g
+    let telRegexWithParenthesis = /(\(\d{3}\))(\d{3})-(\d{4})/g
+    return telRegexWithParenthesis.test(str);
 }
 
 function telephoneCheck(str) {
     let testTelRegexWithMinus = telephoneRegexWithMinus(str);
-    let telRegexWithParenthesis = 
+    let telRegexWithParenthesis = telephoneRegexWithParenthesis(str);
     let telRegexWithParenthesisAndSpace = /(\(\d{3}\))\s(\d{3})-(\d{4})/g
     telRege3 = /(\(\d{3}\))|(\d{3})[-\s]?\s?(\d{3})[-\s]?(\d{4})/g
     return telRegex.test(str);
   }
 
-// TEST TelephoneRegexWithMinus.
+console.log("TEST TelephoneRegexWithMinus") 
 console.log(telephoneRegexWithMinus("555-555-5555"));
 console.log(telephoneRegexWithMinus("(555)555-5555"));
 console.log(telephoneRegexWithMinus("(555) 555-5555"));
 console.log(telephoneRegexWithMinus("555 555 5555"));
 console.log(telephoneRegexWithMinus("5555555555"));
 console.log(telephoneRegexWithMinus("1 555 555 5555"));
+
+console.log("")
+console.log("TEST TelephoneRegexWithMinus.")
+console.log(telephoneRegexWithParenthesis("555-555-5555"));
+console.log(telephoneRegexWithParenthesis("(555)555-5555"));
+console.log(telephoneRegexWithParenthesis("(555) 555-5555"));
+console.log(telephoneRegexWithParenthesis("555 555 5555"));
+console.log(telephoneRegexWithParenthesis("5555555555"));
+console.log(telephoneRegexWithParenthesis("1 555 555 5555"));
