@@ -14,7 +14,7 @@ function telephoneRegexWithParenthesisAndSpace(str) {
 }
 
 function telephoneRegexWith10Numbers(str){
-    let telephoneRegexWith10Numbers = /\d{10}/g
+    let telephoneRegexWith10Numbers = /^1?\d{10}$/g
     return telephoneRegexWith10Numbers.test(str);
 }
 
