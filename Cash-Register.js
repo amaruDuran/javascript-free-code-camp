@@ -22,6 +22,19 @@ function suma(cid) {
 	return cid.reduce((acc, [_nombreMoneda, totalMoneda]) => acc + totalMoneda, 0);
 }
 
+function obtenerMayorCambioCompatible(cajaRegistradora, sistemaMonedas, cambioADar) {
+	let cid = obtenerCidConSistemaMonetario(cajaRegistradora["change"], sistemaMonedas);
+	let cidDescendente = cid.sort(([_nombreA, _totalMonedaA, valorUnitarioA], [_nombreB, _totalMonedaB, valorUnitarioB]) => valorUnitarioB - valorUnitarioA);
+
+	for (let [nombreMoneda, _, valorUnitario] of cidDescendente.entries()) {
+		if (valorUnitario <= cambioADar) {
+			return [nombreMoneda, valorUnitario];
+		}
+	}
+
+	return Number.NaN
+}
+
 function checkCashRegister(price, cash, cid) {
 	var sistemaMonedas = obtenerSistemaMonetario();
 	var cambioADar = cash-price;
@@ -35,17 +48,17 @@ function checkCashRegister(price, cash, cid) {
 		return cajaRegistradora
 	}
 
-	while (cambioADar <= 0) {
-		let mayorCambioCompatible = mayorCambioCompatible(cajaRegistradora, cambioADar);
+	while (cambioADar > 0) {
+		let mayorCambioCompatible = obtenerMayorCambioCompatible(cajaRegistradora, sistemaMonedas, cambioADar);
 
-		if (Number.isNan(mayorCambioCompatible)) {
+		if (Number.isNaN(mayorCambioCompatible)) {
 			cajaRegistradora["status"] = "INSUFFICIENT_FUNDS";
 			cajaRegistradora["change"] = [];
 			return cajaRegistradora;
 		}
 
 		cambioADar -= mayorCambioCompatible;
-		cajaRegistradora["change"] = actualizarCambioEnCaja(cajaRegistradora["change"], mayorCambioCompatible);
+		// cajaRegistradora["change"] = actualizarCambioEnCaja(cajaRegistradora, sistemaMonedas, mayorCambioCompatible);
 	}
 
     return cajaRegistradora;
