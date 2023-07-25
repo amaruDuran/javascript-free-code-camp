@@ -1,7 +1,7 @@
 function obtenerSistemaMonetario() {
     return {
       "PENNY": 0.01,
-      "NICKEL": 005,
+      "NICKEL": 0.05,
       "DIME": 0.1,
       "QUARTER": 0.25,
       "ONE": 1,
@@ -18,8 +18,9 @@ function obtenerCidConSistemaMonetario(cid, sistemaMonetario) {
 	});
 }
 
-// function suma(cid) {
-// }
+function suma(cid) {
+	return cid.reduce((acc, [_nombreMoneda, totalMoneda]) => acc + totalMoneda, 0);
+}
 
 function checkCashRegister(price, cash, cid) {
 	var sistemaMonedas = obtenerSistemaMonetario();
