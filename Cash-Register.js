@@ -22,6 +22,15 @@ function suma(cid) {
 	return cid.reduce((acc, [_nombreMoneda, totalMoneda]) => acc + totalMoneda, 0);
 }
 
+function actualizarCambioEnCaja(cajaRegistradora, sistemaMonedas, mayorCambioCompatible) {
+	cajaRegistradora["change"] = 
+		cajaRegistradora["change"].map((nombreMoneda, totalMoneda) => {
+			if (sistemaMonedas[nombreMoneda] == mayorCambioCompatible) {
+				[nombreMoneda, totalMoneda - mayorCambioCompatible]
+			}
+		});
+}
+
 function obtenerMayorCambioCompatible(cajaRegistradora, sistemaMonedas, cambioADar) {
 	let cid = obtenerCidConSistemaMonetario(cajaRegistradora["change"], sistemaMonedas);
 	let cidDescendente = cid.sort(([_nombreA, _totalMonedaA, valorUnitarioA], [_nombreB, _totalMonedaB, valorUnitarioB]) => valorUnitarioB - valorUnitarioA);
@@ -58,7 +67,7 @@ function checkCashRegister(price, cash, cid) {
 		}
 
 		cambioADar -= mayorCambioCompatible;
-		// cajaRegistradora["change"] = actualizarCambioEnCaja(cajaRegistradora, sistemaMonedas, mayorCambioCompatible);
+		cajaRegistradora["change"] = actualizarCambioEnCaja(cajaRegistradora, sistemaMonedas, mayorCambioCompatible);
 	}
 
     return cajaRegistradora;
