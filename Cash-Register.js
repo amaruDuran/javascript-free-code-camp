@@ -1,3 +1,5 @@
+const PRECISION = 6;
+
 function obtenerSistemaMonetario() {
     return {
       "PENNY": 0.01,
@@ -65,7 +67,7 @@ function obtenerMayorCambioCompatible(cid, sistemaMonedas, cambioADar) {
 		}
 	}
 
-	return Number.NaN
+	return Number.NaN;
 }
 
 function checkCashRegister(price, cash, cid) {
@@ -85,7 +87,6 @@ function checkCashRegister(price, cash, cid) {
 
 	while (cambioADar > 0) {
 		let mayorCambioCompatible = obtenerMayorCambioCompatible(cid, sistemaMonedas, cambioADar);
-		console.log("mayor cambio compatible: ", mayorCambioCompatible);
 
 		if (Number.isNaN(mayorCambioCompatible)) {
 			cajaRegistradora["status"] = "INSUFFICIENT_FUNDS";
@@ -93,10 +94,8 @@ function checkCashRegister(price, cash, cid) {
 			return cajaRegistradora;
 		}
 		let valorUnitario = mayorCambioCompatible[1];
-		cambioADar -= valorUnitario;
-		// console.log("ANTES de CAMBIO EN CAJA:", cid);
+		cambioADar = (cambioADar - valorUnitario).toPrecision(PRECISION);
 		cid = actualizarCambioEnCaja(cid, sistemaMonedas, mayorCambioCompatible);
-		// console.log("DESPUES" , cid);
 		cajaRegistradora["change"] = actualizarCambioAEntregar(cajaRegistradora["change"], mayorCambioCompatible);
 	}
 
@@ -105,4 +104,4 @@ function checkCashRegister(price, cash, cid) {
   
 console.log(checkCashRegister(19.5, 20, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]));
 console.log(checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]));
-// console.log(checkCashRegister(3.26, 100, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]));
+console.log(checkCashRegister(3.26, 100, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]));
