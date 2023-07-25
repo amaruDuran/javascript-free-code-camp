@@ -18,23 +18,33 @@ function obtenerCidConSistemaMonetario(cid, sistemaMonetario) {
 	});
 }
 
-function noPuedoDarCambio(cid, cambioADar, sistemaMonetario) {
-	let cidRecargado = obtenerCidConSistemaMonetario(cid, sistemaMonetario);
-	return true;
-}
+// function suma(cid) {
+// }
 
 function checkCashRegister(price, cash, cid) {
 	var sistemaMonedas = obtenerSistemaMonetario();
-	let cambioADar = cash-price;
+	var cambioADar = cash-price;
 	var cajaRegistradora = {
 		"status": "OPEN",
 		"change": cid
 	}
 
-	if (noPuedoDarCambio(cid, cambioADar, sistemaMonedas)) {
-		cajaRegistradora["status"] = "INSUFFICIENT_FUNDS"
-		cajaRegistradora["change"] = []
-		return cajaRegistradora;
+	if (suma(cid) == cambioADar) {
+		cajaRegistradora["status"] = "CLOSED"
+		return cajaRegistradora
+	}
+
+	while (cambioADar <= 0) {
+		let mayorCambioCompatible = mayorCambioCompatible(cajaRegistradora, cambioADar);
+
+		if (Number.isNan(mayorCambioCompatible)) {
+			cajaRegistradora["status"] = "INSUFFICIENT_FUNDS";
+			cajaRegistradora["change"] = [];
+			return cajaRegistradora;
+		}
+
+		cambioADar -= mayorCambioCompatible;
+		cajaRegistradora["change"] = actualizarCambioEnCaja(cajaRegistradora["change"], mayorCambioCompatible);
 	}
 
     return cajaRegistradora;
