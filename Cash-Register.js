@@ -22,18 +22,19 @@ function suma(cid) {
 	return cid.reduce((acc, [_nombreMoneda, totalMoneda]) => acc + totalMoneda, 0);
 }
 
-function actualizarCambioEnCaja(cajaRegistradora, sistemaMonedas, mayorCambioCompatible) {
-	cajaRegistradora["change"] = 
-		cajaRegistradora["change"].map((nombreMoneda, totalMoneda) => {
+function actualizarCambioEnCaja(cid, sistemaMonedas, mayorCambioCompatible) {
+	let cidActualizado = 
+		cid.map((nombreMoneda, totalMoneda) => {
 			if (sistemaMonedas[nombreMoneda] == mayorCambioCompatible) {
 				[nombreMoneda, totalMoneda - mayorCambioCompatible]
 			}
 		});
+	return cidActualizado;
 }
 
-function obtenerMayorCambioCompatible(cajaRegistradora, sistemaMonedas, cambioADar) {
-	let cid = obtenerCidConSistemaMonetario(cajaRegistradora["change"], sistemaMonedas);
-	let cidDescendente = cid.sort(([_nombreA, _totalMonedaA, valorUnitarioA], [_nombreB, _totalMonedaB, valorUnitarioB]) => valorUnitarioB - valorUnitarioA);
+function obtenerMayorCambioCompatible(cid, sistemaMonedas, cambioADar) {
+	let nuevoCid = obtenerCidConSistemaMonetario(cid, sistemaMonedas);
+	let cidDescendente = nuevoCid.sort(([_nombreA, _totalMonedaA, valorUnitarioA], [_nombreB, _totalMonedaB, valorUnitarioB]) => valorUnitarioB - valorUnitarioA);
 
 	for (let [nombreMoneda, _, valorUnitario] of cidDescendente.entries()) {
 		if (valorUnitario <= cambioADar) {
@@ -47,19 +48,22 @@ function obtenerMayorCambioCompatible(cajaRegistradora, sistemaMonedas, cambioAD
 function checkCashRegister(price, cash, cid) {
 	var sistemaMonedas = obtenerSistemaMonetario();
 	var cambioADar = cash-price;
+	var cid = cid;
 	var cajaRegistradora = {
 		"status": "OPEN",
-		"change": cid
+		"change": []
 	}
 
 	if (suma(cid) == cambioADar) {
-		cajaRegistradora["status"] = "CLOSED"
+		cajaRegistradora["status"] = "CLOSED";
+		cajaRegistradora["change"] = cid;
 		return cajaRegistradora
 	}
+	console.log("llegue acá");
 
 	while (cambioADar > 0) {
-		let mayorCambioCompatible = obtenerMayorCambioCompatible(cajaRegistradora, sistemaMonedas, cambioADar);
-
+		let mayorCambioCompatible = obtenerMayorCambioCompatible(cid, sistemaMonedas, cambioADar);
+		console.log(mayorCambioCompatible);
 		if (Number.isNaN(mayorCambioCompatible)) {
 			cajaRegistradora["status"] = "INSUFFICIENT_FUNDS";
 			cajaRegistradora["change"] = [];
@@ -67,10 +71,11 @@ function checkCashRegister(price, cash, cid) {
 		}
 
 		cambioADar -= mayorCambioCompatible;
-		cajaRegistradora["change"] = actualizarCambioEnCaja(cajaRegistradora, sistemaMonedas, mayorCambioCompatible);
+		cid = actualizarCambioEnCaja(cid, sistemaMonedas, mayorCambioCompatible);
+		// cajaRegistradora["change"] = actualizarCambioAEntregar(cajaRegistradora["change"], mayorCambioCompatible);
 	}
 
     return cajaRegistradora;
 }
   
-checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]);
+console.log(checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]));
