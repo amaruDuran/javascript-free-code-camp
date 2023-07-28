@@ -20,7 +20,7 @@ function palindrome(str) {
         ")"
     ]
 
-    var clean_str = str.toLowerCase();
+    let clean_str = str.toLowerCase();
     clean_str = quitarCaracteresEspeciales(clean_str, caracteresEspeciales)
     let reverse_string = reverseString(clean_str);
     
