@@ -15,20 +15,18 @@ function obtenerSistemaMonetario() {
 }
 
 function obtenerCidConSistemaMonetario(cid, sistemaMonetario) {
-	return cid.map(function ([nombreMoneda, dineroDisponible]) {
-		return [nombreMoneda, dineroDisponible, sistemaMonetario[nombreMoneda]];
-	});
+	return cid.map(([nombreMoneda, dineroDisponible]) => [nombreMoneda, dineroDisponible, sistemaMonetario[nombreMoneda]]);
 }
 
 function suma(cid) {
 	return cid.reduce((acc, [_nombreMoneda, totalMoneda]) => acc + totalMoneda, 0);
 }
 
-function actualizarCambioEnCaja(cid, sistemaMonedas, mayorCambioCompatible) {
+function actualizarCambioEnCaja(cid, [nombreMayorCambioCompatible, valorMayorCambioCompatible]) {
 	let cidActualizado = 
 		cid.map(([nombreMoneda, totalMoneda]) => {
-			if (nombreMoneda == mayorCambioCompatible[0]) {
-				return [nombreMoneda, totalMoneda - mayorCambioCompatible[1]];
+			if (nombreMoneda == nombreMayorCambioCompatible) {
+				return [nombreMoneda, totalMoneda - valorMayorCambioCompatible];
 			}
 			else{
 				return [nombreMoneda, totalMoneda];
@@ -38,15 +36,14 @@ function actualizarCambioEnCaja(cid, sistemaMonedas, mayorCambioCompatible) {
 }
 
 function actualizarCambioAEntregar(cambioMonetario, mayorCambioCompatible) {
-	if (cambioMonetario.length == 0) {
-		cambioMonetario.push(mayorCambioCompatible);
-		return cambioMonetario;
-	}
-	else if ( cambioMonetario.some(([nombreMoneda, valorAcum]) => nombreMoneda == mayorCambioCompatible[0]) ){
+	let nombreMayorCambioCompatible = mayorCambioCompatible[0];
+	let valorMayorCambioCompatible = mayorCambioCompatible[1];
+
+	if ( cambioMonetario.some(([nombreMoneda, _valorAcum]) => nombreMoneda == nombreMayorCambioCompatible) ){
 		return cambioMonetario.map(
 			([nombreMoneda, valorAcum]) => {
-				if (nombreMoneda == mayorCambioCompatible[0]) {
-					return [ nombreMoneda, valorAcum + mayorCambioCompatible[1] ];
+				if (nombreMoneda == nombreMayorCambioCompatible) {
+					return [ nombreMoneda, valorAcum + valorMayorCambioCompatible ];
 				}
 				else{
 					return [nombreMoneda, valorAcum];
@@ -95,7 +92,7 @@ function checkCashRegister(price, cash, cid) {
 		}
 		let valorUnitario = mayorCambioCompatible[1];
 		cambioADar = (cambioADar - valorUnitario).toPrecision(PRECISION);
-		cid = actualizarCambioEnCaja(cid, sistemaMonedas, mayorCambioCompatible);
+		cid = actualizarCambioEnCaja(cid, mayorCambioCompatible);
 		cajaRegistradora["change"] = actualizarCambioAEntregar(cajaRegistradora["change"], mayorCambioCompatible);
 	}
 
