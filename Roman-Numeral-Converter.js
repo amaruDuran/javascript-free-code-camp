@@ -1,5 +1,5 @@
 function obtenerTablaSimbolosRomanos(){
-    var simbolosRomanos = {
+    let simbolosRomanos = {
         1000: "M",
         900: "CM",
         500: "D",
@@ -36,7 +36,7 @@ function convertToRoman(num) {
     while (num != 0) {
         let menorCompatible = buscarMenorCompatible(num, simbolosRomanos);
         resul += simbolosRomanos[menorCompatible];
-        num-= menorCompatible;
+        num -= menorCompatible;
     }
 
     return resul;
