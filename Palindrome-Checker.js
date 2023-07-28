@@ -20,11 +20,11 @@ function palindrome(str) {
         ")"
     ]
 
-    let clean_str = str.toLowerCase();
-    clean_str = quitarCaracteresEspeciales(clean_str, caracteresEspeciales)
-    let reverse_string = reverseString(clean_str);
+    let cleanStr = str.toLowerCase();
+    cleanStr = quitarCaracteresEspeciales(cleanStr, caracteresEspeciales)
+    let _reverseString = reverseString(cleanStr);
     
-    return clean_str == reverse_string;
+    return cleanStr == _reverseString;
 }
 
 console.log(palindrome("0_0 (: /-\ :) 0-0"))
