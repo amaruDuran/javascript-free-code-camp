@@ -9,8 +9,7 @@ function telephoneRegexWith10NumbersAndSpace(str) {
 }
 
 function telephoneCheck(str) {
-    return (telephoneRegexWithParenthesisAndSpace(str)
-     || telephoneRegexWith10NumbersAndSpace(str));
+    return (telephoneRegexWithParenthesisAndSpace(str) || telephoneRegexWith10NumbersAndSpace(str));
   }
 
 console.log("")
